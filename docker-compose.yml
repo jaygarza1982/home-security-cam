@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+
+    minio:
+        container_name: 'minio'
+        image: quay.io/minio/minio
+        volumes: 
+            - ./data:/data
+        ports:
+            - 9000:9000
+            - 9001:9001
+        command: server /data --console-address ":9001"
+        env_file: .env

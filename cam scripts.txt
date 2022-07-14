@@ -1,0 +1,7 @@
+ffmpeg -f v4l2 -i /dev/video0  -profile:v high -pix_fmt yuvj420p -level:v 4.1 -preset ultrafast -tune zerolatency -vcodec libx264 -r 10 -b:v 512k -s 640x360 -strict -2 -f mpegts -flush_packets 0 udp://localhost:5000
+
+
+ffmpeg -i udp://@0.0.0.0:5000 -an -vcodec flv file.mkv
+
+
+working: ffmpeg -i udp://@0.0.0.0:5000 -an -vcodec flv -f segment -segment_time 10  file-%d.mkv -y
