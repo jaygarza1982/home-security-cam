@@ -6,9 +6,19 @@ services:
         container_name: 'minio'
         image: quay.io/minio/minio
         volumes: 
-            - ./data:/data
+            - ./s3-data:/data
         ports:
             - 9000:9000
             - 9001:9001
         command: server /data --console-address ":9001"
+        env_file: .env
+
+    cam-server-syncer:
+        container_name: 'cam-server-syncer'
+        build:
+          context: cam-server-syncer
+        ports:
+            - 8000:8000
+        # For debugging compile issues
+        # command: sleep 10000000
         env_file: .env
