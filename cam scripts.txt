@@ -5,3 +5,4 @@ ffmpeg -i udp://@0.0.0.0:5000 -an -vcodec flv file.mkv
 
 
 working: ffmpeg -i udp://@0.0.0.0:5000 -an -vcodec flv -f segment -segment_time 10  file-%d.mkv -y
+ffmpeg -i udp://@0.0.0.0:5000 -an -vcodec flv -f segment -strftime 1 -segment_time 10  file-%Y-%m-%d_%H-%M-%S.mkv -y

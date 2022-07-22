@@ -1,2 +1,4 @@
 cam-server-syncer/target
+cam-server-finder/target
+cam-server-finder/videos
 s3-data
