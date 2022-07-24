@@ -30,6 +30,7 @@ RUN rm -rf src
 COPY src /usr/src/cam-server-snycer/src/
 COPY Cargo.toml /usr/src/cam-server-snycer/
 COPY Cargo.lock /usr/src/cam-server-snycer/
+COPY Rocket.toml /usr/src/cam-server-snycer/
 
 # This is the actual build.
 RUN cargo build --release \
