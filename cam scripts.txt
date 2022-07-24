@@ -3,3 +3,4 @@ ffmpeg -f v4l2 -i /dev/video0  -profile:v high -pix_fmt yuvj420p -level:v 4.1 -p
 working: ffmpeg -i udp://@0.0.0.0:5000 -an -vcodec flv -f segment -segment_time 10  file-%d.mkv -y
 
 ffmpeg -i udp://@0.0.0.0:5000 -an -vcodec flv -f segment -strftime 1 -segment_time 10 %sfile-%Y-%m-%d_%H-%M-%S.mkv -y
+ffmpeg -i udp://@0.0.0.0:5000 -an -vcodec flv -f segment -strftime 1 -segment_time 10 cam-server-finder/videos/%sfile-%Y-%m-%d_%H-%M-%S.mkv -y

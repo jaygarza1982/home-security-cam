@@ -1,22 +1,28 @@
-use std::{fs};
-use chrono::{DateTime, ParseResult, FixedOffset, NaiveDateTime, Utc};
+use std::{fs, num::ParseIntError};
+use chrono::{DateTime, NaiveDateTime, Utc, Duration};
 
 #[allow(dead_code)]
 
-fn date_from_filename(filename: &str) {
-    println!("Processing video {}", filename);
-
+fn get_file_age(filename: &str) -> Result<i64, ParseIntError> {
     // Obtain file timestamp
-    let fileSplit: Vec<&str> = filename.split("file").collect();
-    let timeStr: &str = fileSplit[0];
-    let timestamp = timeStr.parse::<i64>().unwrap();
+    let file_split: Vec<&str> = filename.split("file").collect();
+    let time_str: &str = file_split[0];
+    let timestamp: i64 = time_str.parse::<i64>()?;
 
-    let naive = NaiveDateTime::from_timestamp(timestamp, 0);
-    let datetime: DateTime<Utc> = DateTime::from_utc(naive, Utc);
+    // Convert to datetime
+    let naive: NaiveDateTime = NaiveDateTime::from_timestamp(timestamp, 0);
+    let file_date: DateTime<Utc> = DateTime::from_utc(naive, Utc);
+    
+    // Find difference between now and file creation
+    let now: DateTime<Utc> = Utc::now();
+    let difference: Duration = now - file_date;
+    let seconds: i64 = difference.num_seconds();
 
-    // TODO: construct current date and check if file was created N seconds after current date
+    return Ok(seconds);
+}
 
-    println!("datetime {}", datetime);
+fn process_file(filename: &str) {
+    println!("Processing video because was older than 10 secs {}", filename);
 }
 
 fn main() {
@@ -24,6 +30,8 @@ fn main() {
 
     println!("Listing from {}", videos_path);
 
+    // TODO: Hashset of files seen and only process ones that have not been seen
+    // TODO: Infinite loop
     let paths = fs::read_dir(videos_path).unwrap();
 
     for path in paths {
@@ -32,6 +40,11 @@ fn main() {
             path.unwrap().path().file_stem().unwrap().to_str().unwrap()
         );
 
-       date_from_filename(&video_file)
+        // TODO: handle error
+        let age_in_secs: i64 = get_file_age(&video_file).unwrap();
+
+        if age_in_secs > 10 {
+            process_file(&video_file);
+        }
     }
 }
